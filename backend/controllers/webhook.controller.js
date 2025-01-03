@@ -1,4 +1,5 @@
 import { Webhook } from 'svix'
+import User from '../models/user.model.js'
 
 export const clerkWebHook = async (req, res)=>{
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET
@@ -6,7 +7,8 @@ export const clerkWebHook = async (req, res)=>{
     if(!WEBHOOK_SECRET){
         throw new Error("Webhook secret missing!")
     }
-
+    //console.log('SECRET_KEY_KITOKO')
+    console.log(req.body)
     const payload = req.body;
     const headers = req.headers;
 
@@ -22,9 +24,10 @@ export const clerkWebHook = async (req, res)=>{
     if(evt.type === "user.created"){
         
         const newUser = new User({
+            
             clerkUserId: evt.data.id,
-            username: evt.data.username || evt.data.email_address[0].email_address,
-            email: evt.data.email_address[0].email_address,
+            username: evt.data.username || evt.data.email_addresses[0].email_address,
+            email: evt.data.email_addresses[0].email_address,
             img: evt.data.profile_img_url,
 
         })

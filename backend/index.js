@@ -8,10 +8,13 @@ import { clerkMiddleware } from '@clerk/express'
 import cors from 'cors'
 
 const app = express()
-app.use(cors(process.env.CLIENT_URL))
+const PORT = process.env.PORT || 2828
+
 app.use(clerkMiddleware())
 app.use('/webhooks', webhookRouter)
 app.use(express.json())
+
+app.use(cors(process.env.CLIENT_URL))
 
 app.get('/test', async (req,res)=>{
     res.status(200).send(process.env.test)
@@ -30,9 +33,20 @@ app.get('/test', async (req,res)=>{
     })
 */
 
+
 app.use("/users", userRouter)
 app.use("/posts", postRouter)
 app.use("/comments", commentRouter)
+
+// allow cross-origin requests
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", 
+      "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+  
+
 /*
 app.use((error,req,res,next)=>{
     res.status(error.status || 500)
@@ -44,8 +58,8 @@ app.use((error,req,res,next)=>{
     })
 })*/
 
-app.listen(2828,()=>{
+app.listen(PORT,()=>{
     connectDB()
-    console.log('Up and kicking!')
+    console.log(`Up and kicking at port: ${PORT}`)
     console.log(process.env.test)
 })

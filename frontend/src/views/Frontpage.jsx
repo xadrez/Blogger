@@ -17,10 +17,9 @@ const Frontpage = () => {
         {/* Titles */}
         <div className="">
           <h1 className="text-gray-800 text-2xl md:text-5xl lg:text-6xl font-bold">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Thousand of traders arround the world would like to learn from certified traders.
           </h1>
-          <p className="mt-8 text-mdd md:text-xl">Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-            Maiores est vero perferendis culpa, necessitatibus hic recusandae.</p>
+          <p className="mt-8 text-mdd md:text-xl">You've been on a journey and you have factual results to back it up, we would like to here from you as matter fact the World would love to here your story. Goods and bads your light bulbe moment, everything you beleive might empower this army of aspiring trader out here.</p>
         </div>
         {/* Animated button */}
         <Link to='write' className="hidden md:block relative">
@@ -38,7 +37,7 @@ const Frontpage = () => {
                   <textPath href="#circlePath" startOffset='0%'>
                     Share your experience.
                   </textPath>
-                  <textPath href="#circlePath" startOffset='50%'>
+                  <textPath href="#circlePath" startOffset='55%'>
                     And your strategy.
                   </textPath>
                 </text>          
