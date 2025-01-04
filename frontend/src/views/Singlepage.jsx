@@ -1,28 +1,46 @@
 import Image from '../components/Image'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import PostMenuAction from '../components/PostMenuAction'
 import Search from '../components/Search'
 import Comments from '../components/Comments'
+import { useQuery } from "@tanstack/react-query"
+import axios from 'axios'
+
+const fetchPost = async (slug) => {
+  const res = await axios.get(`${import.meta.env.VITE_API_URL}/posts/${slug}`)
+  return res.data
+}
 
 const Singlepage = () => {
+  const { slug } = useParams()
+
+  const {isPending, error,data } = useQuery({
+    queryKey: ['post', slug],
+    queryFn: () => fetchPost(slug)
+  })
+
+  if(isPending) return 'Loading'
+  if(error) return 'Oops, something went wrong... '+error.message
+  if(!data) return 'Post not found'
+  console.log(data)
   return (
     <div className="flex flex-col gap-8">
       {/** details */}
       <div className="gap-8 flex">
         <div className='lg:w-3/5 flex flex-col gap-8'>
-          <h1 className='text-xl md:text-3xl xl:text-4xl 2xl:text-5xl font-semibold'>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</h1>
+          <h1 className='text-xl md:text-3xl xl:text-4xl 2xl:text-5xl font-semibold'>{data.title}</h1>
           <div className='flex items-center gap-2 text-gray-400 text-sm'>
             <span>Written by</span>
-            <Link to='/test' className="text-blue-800">Mr. Zoro</Link>
+            <Link to='/test' className="text-blue-800">Mr/Mrs {data.user.username}</Link>
             <span>on</span>
             <Link to='/test' className="text-blue-800">Indexes</Link>
             <span>2 days ago</span>
           </div>
           <p className='text-gray-500 font-medium'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo hic ratione, illo debitis alias, labore accusamus natus asperiores libero, nostrum quas sapiente nesciunt expedita quasi quis! Asperiores aperiam commodi saepe.</p>
         </div>
-        <div className="hidden lg:block w-2/5">
-          <Image src='postImg.jpeg' w='600' className='rounded-2xl'/>
-        </div>
+        { data.img && <div className="hidden lg:block w-2/5">
+          <Image src={data.img} w='600' className='rounded-2xl'/>
+        </div>}
       </div>
       {/** content */}
       <div className="flex flex-col md:flex-row gap-8">
@@ -78,7 +96,7 @@ const Singlepage = () => {
             <Search />
           </div>
       </div>
-      <Comments />
+      <Comments postId={data._id}/>
     </div>
   
   )

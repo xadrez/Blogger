@@ -35,7 +35,7 @@ let router = createBrowserRouter([
         element: <Frontpage />,
       },
       {
-        path:"/singlepage",
+        path:"/:slug",
         element: <Singlepage />,
       },
     {

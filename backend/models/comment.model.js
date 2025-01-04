@@ -21,4 +21,4 @@ const commentSchema = new Schema({
 { timestamps: true }
 )
 
-export default mongoose.model("Comments", commentSchema)
+export default mongoose.model("Comment", commentSchema)
